@@ -1,9 +1,10 @@
-com\sam\manager\Rank.class
-com\sam\manager\NametagManager.class
+com\sam\managers\DatabaseManager.class
+com\sam\managers\RankManager.class
 com\sam\commands\MessageCommand.class
 com\sam\commands\RankCommand.class
-com\sam\manager\RankManager.class
 com\sam\commands\RankTabCompleter.class
 com\sam\listeners\RankListener.class
 com\sam\listeners\Events.class
+com\sam\managers\NametagManager.class
+com\sam\managers\Rank.class
 com\sam\Main.class

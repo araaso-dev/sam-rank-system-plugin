@@ -1,4 +1,4 @@
-package com.sam.manager;
+package com.sam.managers;
 
 import org.bukkit.ChatColor;
 
@@ -27,19 +27,5 @@ public class Rank {
     public ChatColor getChatColor() { return chatColor; }
     public List<String> getPermissions() { return new ArrayList<>(permissions); }
 
-    // Setters
-    public void setPrefix(String prefix) { this.prefix = prefix; }
-    public void setNameColor(ChatColor nameColor) { this.nameColor = nameColor; }
-    public void setChatColor(ChatColor chatColor) { this.chatColor = chatColor; }
-
-    // Permission management
-    public void addPermission(String permission) {
-        if (!permissions.contains(permission)) {
-            permissions.add(permission);
-        }
-    }
-
-    public void removePermission(String permission) {
-        permissions.remove(permission);
-    }
+    // Setters are removed as ranks are now managed through the database
 }

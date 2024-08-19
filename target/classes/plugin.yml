@@ -7,7 +7,7 @@ description: My first ever Rank Manager!
 commands:
     rank:
         description: Manage ranks and player ranks
-        usage: /rank <create|delete|setplayer|addperm|removeperm|setdefault|list>
+        usage: /rank <create|delete|setplayer|addperm|removeperm|setdefault|list|listperms>
     message:
         description: Send a private message to another player
         usage: /message <player> <message>
@@ -15,6 +15,12 @@ commands:
 permissions:
     samrank.admin:
         description: Allows access to all SamRank commands
+        default: op
+    samrank.setcolors:
+        description: Allows setting rank colors
+        default: op
+    samrank.setprefix:
+        description: Allows setting rank prefix
         default: op
     samrank.create:
         description: Allows creation of new ranks

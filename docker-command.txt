@@ -1,0 +1,1 @@
+docker run --name samrank_postgres -e POSTGRES_DB=your_database_name -e POSTGRES_USER=your_username -e POSTGRES_PASSWORD=your_password -p 5432:5432 -d postgres:13

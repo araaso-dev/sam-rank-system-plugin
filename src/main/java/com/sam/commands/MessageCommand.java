@@ -1,7 +1,7 @@
 package com.sam.commands;
 
 import com.sam.Main;
-import com.sam.manager.Rank;
+import com.sam.managers.Rank;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -36,8 +36,13 @@ public class MessageCommand implements CommandExecutor {
         }
 
         Player senderPlayer = (Player) sender;
-        Rank senderRank = plugin.getRankManager().getPlayerRank(senderPlayer.getUniqueId());
-        Rank targetRank = plugin.getRankManager().getPlayerRank(target.getUniqueId());
+        Rank senderRank = plugin.getDatabaseManager().getPlayerRank(senderPlayer.getUniqueId());
+        Rank targetRank = plugin.getDatabaseManager().getPlayerRank(target.getUniqueId());
+
+        if (senderRank == null || targetRank == null) {
+            sender.sendMessage(ChatColor.RED + "Error retrieving rank information. Please contact an administrator.");
+            return true;
+        }
 
         StringBuilder messageBuilder = new StringBuilder();
         for (int i = 1; i < args.length; i++) {
@@ -46,12 +51,15 @@ public class MessageCommand implements CommandExecutor {
         String message = messageBuilder.toString().trim();
 
         // Format for sender
-        String senderFormat = ChatColor.GRAY + "[" + ChatColor.WHITE + "me" + ChatColor.GRAY + " -> " + targetRank.getPrefix() + " " + targetRank.getNameColor() + target.getName() + ChatColor.GRAY + "]: " + ChatColor.WHITE + message;
+        String senderFormat = ChatColor.GRAY + "[" + ChatColor.WHITE + "me" + ChatColor.GRAY + " -> " +
+                targetRank.getPrefix() + " " + targetRank.getNameColor() + target.getName() +
+                ChatColor.GRAY + "]: " + ChatColor.WHITE + message;
         senderPlayer.sendMessage(senderFormat);
 
         // Format for recipient
-        String recipientFormat = ChatColor.GRAY + "[" + senderRank.getPrefix() + " " + senderRank.getNameColor() + senderPlayer.getName() +
-                ChatColor.GRAY + " -> " + ChatColor.WHITE + "me" + ChatColor.GRAY + "]: " + ChatColor.WHITE + message;
+        String recipientFormat = ChatColor.GRAY + "[" + senderRank.getPrefix() + " " + senderRank.getNameColor() +
+                senderPlayer.getName() + ChatColor.GRAY + " -> " + ChatColor.WHITE + "me" +
+                ChatColor.GRAY + "]: " + ChatColor.WHITE + message;
         target.sendMessage(recipientFormat);
 
         return true;

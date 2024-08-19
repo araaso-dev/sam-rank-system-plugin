@@ -1,7 +1,7 @@
 package com.sam.commands;
 
 import com.sam.Main;
-import com.sam.manager.Rank;
+import com.sam.managers.Rank;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -18,7 +18,7 @@ public class RankCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length < 1) {
-            sender.sendMessage(ChatColor.RED + "Usage: /rank <create|delete|setplayer|addperm|removeperm|setdefault|list>");
+            sender.sendMessage(ChatColor.RED + "Usage: /rank <create|delete|setplayer|addperm|removeperm|setdefault|list|listperms>");
             return true;
         }
 
@@ -96,6 +96,20 @@ public class RankCommand implements CommandExecutor {
                 }
                 listRanks(sender);
                 break;
+            case "setcolors":
+                if (args.length < 4) {
+                    sender.sendMessage(ChatColor.RED + "Usage: /rank setcolors <rankName> <nameColor> <chatColor>");
+                    return true;
+                }
+                setRankColors(sender, args[1], args[2], args[3]);
+                break;
+            case "setprefix":
+                if (args.length < 3) {
+                    sender.sendMessage(ChatColor.RED + "Usage: /rank setprefix <rankName> <newPrefix>");
+                    return true;
+                }
+                setRankPrefix(sender, args[1], args[2]);
+                break;
             case "listperms":
                 if (!sender.hasPermission("samrank.listperms") && !sender.hasPermission("samrank.admin")) {
                     sender.sendMessage(ChatColor.RED + "You don't have permission to use this command.");
@@ -147,7 +161,6 @@ public class RankCommand implements CommandExecutor {
         plugin.getRankManager().setPlayerRank(target.getUniqueId(), rankName);
         sender.sendMessage(ChatColor.GREEN + "Set " + playerName + "'s rank to " + rankName);
         target.sendMessage(ChatColor.GREEN + "Your rank has been set to " + rankName);
-        plugin.getNametagManager().updatePlayerNameTag(target);
     }
 
     private void addPermission(CommandSender sender, String rankName, String permission) {
@@ -194,5 +207,21 @@ public class RankCommand implements CommandExecutor {
         for (String permission : rank.getPermissions()) {
             sender.sendMessage(ChatColor.YELLOW + "- " + permission);
         }
+    }
+
+    private void setRankColors(CommandSender sender, String rankName, String nameColorStr, String chatColorStr) {
+        try {
+            ChatColor nameColor = ChatColor.valueOf(nameColorStr.toUpperCase());
+            ChatColor chatColor = ChatColor.valueOf(chatColorStr.toUpperCase());
+            plugin.getRankManager().updateRankColors(rankName, nameColor, chatColor);
+            sender.sendMessage(ChatColor.GREEN + "Updated colors for rank " + rankName);
+        } catch (IllegalArgumentException e) {
+            sender.sendMessage(ChatColor.RED + "Invalid color name. Use color names like RED, BLUE, etc.");
+        }
+    }
+
+    private void setRankPrefix(CommandSender sender, String rankName, String newPrefix) {
+        plugin.getRankManager().updateRankPrefix(rankName, newPrefix);
+        sender.sendMessage(ChatColor.GREEN + "Updated prefix for rank " + rankName);
     }
 }

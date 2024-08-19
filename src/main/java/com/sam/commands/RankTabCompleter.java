@@ -1,8 +1,9 @@
 package com.sam.commands;
 
 import com.sam.Main;
-import com.sam.manager.Rank;
+import com.sam.managers.Rank;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 public class RankTabCompleter implements TabCompleter {
 
     private Main plugin;
-    private static final List<String> COMMANDS = Arrays.asList("create", "delete", "setplayer", "addperm", "removeperm", "setdefault", "list", "listperms");
+    private static final List<String> COMMANDS = Arrays.asList("create", "delete", "setplayer", "addperm", "removeperm", "setdefault", "list", "listperms", "setcolors", "setprefix");
     private static final List<String> COLORS = Arrays.asList("BLACK", "DARK_BLUE", "DARK_GREEN", "DARK_AQUA", "DARK_RED", "DARK_PURPLE", "GOLD", "GRAY", "DARK_GRAY", "BLUE", "GREEN", "AQUA", "RED", "LIGHT_PURPLE", "YELLOW", "WHITE");
 
     public RankTabCompleter(Main plugin) {
@@ -42,11 +43,16 @@ public class RankTabCompleter implements TabCompleter {
                 case "removeperm":
                 case "setdefault":
                 case "listperms":
+                case "setcolors":
+                case "setprefix":
                     if (args.length == 2) {
-                        List<String> rankNames = plugin.getRankManager().getAllRanks().stream()
+                        List<String> rankNames = plugin.getDatabaseManager().getAllRanks().stream()
                                 .map(Rank::getName)
                                 .collect(Collectors.toList());
                         StringUtil.copyPartialMatches(args[1], rankNames, completions);
+                    }
+                    if (args[0].equalsIgnoreCase("setcolors") && (args.length == 3 || args.length == 4)) {
+                        StringUtil.copyPartialMatches(args[args.length - 1], COLORS, completions);
                     }
                     break;
                 case "setplayer":
@@ -56,7 +62,7 @@ public class RankTabCompleter implements TabCompleter {
                                 .collect(Collectors.toList());
                         StringUtil.copyPartialMatches(args[1], playerNames, completions);
                     } else if (args.length == 3) {
-                        List<String> rankNames = plugin.getRankManager().getAllRanks().stream()
+                        List<String> rankNames = plugin.getDatabaseManager().getAllRanks().stream()
                                 .map(Rank::getName)
                                 .collect(Collectors.toList());
                         StringUtil.copyPartialMatches(args[2], rankNames, completions);

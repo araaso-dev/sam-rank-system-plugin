@@ -1,7 +1,7 @@
 package com.sam.listeners;
 
 import com.sam.Main;
-import com.sam.manager.Rank;
+import com.sam.managers.Rank;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -21,10 +21,12 @@ public class RankListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        if (!player.hasPlayedBefore()) {
-            plugin.getRankManager().setPlayerRank(player.getUniqueId(), plugin.getRankManager().getDefaultRank());
+        plugin.getDatabaseManager().addPlayer(player);
+        Rank playerRank = plugin.getRankManager().getPlayerRank(player.getUniqueId());
+        if (playerRank == null) {
+            String defaultRankName = plugin.getRankManager().getDefaultRank();
+            plugin.getRankManager().setPlayerRank(player.getUniqueId(), defaultRankName);
         }
-
         plugin.getNametagManager().setNameTags(player);
         plugin.getRankManager().updatePlayerPermissions(player);
     }
@@ -40,6 +42,10 @@ public class RankListener implements Listener {
         event.setCancelled(true);
         Player player = event.getPlayer();
         Rank playerRank = plugin.getRankManager().getPlayerRank(player.getUniqueId());
+        if (playerRank == null) {
+            String defaultRankName = plugin.getRankManager().getDefaultRank();
+            playerRank = plugin.getRankManager().getRank(defaultRankName);
+        }
 
         String message = event.getMessage();
         if (player.hasPermission("samrank.chatcolor")) {

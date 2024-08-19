@@ -1,4 +1,4 @@
-package com.sam.manager;
+package com.sam.managers;
 
 import com.sam.Main;
 import org.bukkit.Bukkit;
