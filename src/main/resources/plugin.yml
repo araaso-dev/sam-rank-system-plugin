@@ -1,0 +1,45 @@
+name: Sam-Rank-System
+version: '1.0-SNAPSHOT'
+main: com.sam.Main
+api-version: '1.20'
+authors: [ SamTheNoob69 ]
+description: My first ever Rank Manager!
+commands:
+    rank:
+        description: Manage ranks and player ranks
+        usage: /rank <create|delete|setplayer|addperm|removeperm|setdefault|list>
+    message:
+        description: Send a private message to another player
+        usage: /message <player> <message>
+        aliases: [msg, m, whisper, w]
+permissions:
+    samrank.admin:
+        description: Allows access to all SamRank commands
+        default: op
+    samrank.create:
+        description: Allows creation of new ranks
+        default: op
+    samrank.delete:
+        description: Allows deletion of ranks
+        default: op
+    samrank.setplayer:
+        description: Allows setting a player's rank
+        default: op
+    samrank.addperm:
+        description: Allows adding permissions to a rank
+        default: op
+    samrank.removeperm:
+        description: Allows removing permissions from a rank
+        default: op
+    samrank.setdefault:
+        description: Allows setting the default rank
+        default: op
+    samrank.list:
+        description: Allows listing all ranks
+        default: op
+    samrank.chatcolor:
+        description: Allows using color codes in chat
+        default: op
+    samrank.message:
+        description: Allows sending private messages
+        default: true
